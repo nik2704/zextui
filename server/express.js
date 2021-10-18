@@ -25,8 +25,7 @@ app.get( /\.(js|css|map|ico)$/, express.static( path.resolve( __dirname, '../dis
 app.use( '*', async ( req, res ) => {
     // get matched route
     const matchRoute = routes.find( route => matchPath( req.originalUrl, route ) );
-    console.log(req.originalUrl);
-    console.log(matchRoute);
+
     // fetch data of the matched component
     let componentData = { token: req.cookies['SMAX_AUTH_TOKEN'] || null }
 
