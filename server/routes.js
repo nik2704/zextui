@@ -1,9 +1,9 @@
-const { Counter } = require( '../src/components/counter' );
+const { App } = require( '../src/components/app' );
 
 module.exports = [
     {
         path: '/',
         exact: true,
-        component: Counter,
+        component: App,
     }
 ];

@@ -56,14 +56,14 @@ module.exports = {
         } ),
 
         // copy static files from `src` to `dist`
-        new CopyWebpackPlugin( {
-            patterns: [
-                {
-                    from: path.resolve( __dirname, 'src/assets' ),
-                    to: path.resolve( __dirname, 'dist/assets' )
-                }
-            ]
-        } ),
+        // new CopyWebpackPlugin( {
+        //     patterns: [
+        //         {
+        //             from: path.resolve( __dirname, 'src/assets' ),
+        //             to: path.resolve( __dirname, 'dist/assets' )
+        //         }
+        //     ]
+        // } ),
     ],
 
     // resolve files configuration

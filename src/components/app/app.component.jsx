@@ -1,14 +1,18 @@
 import React from 'react';
 import { NavLink as Link, Switch, Route } from 'react-router-dom';
+// import fetch from 'node-fetch';
+// import axios from 'axios';
+// import https from 'https';
+import { fetchSMAXData } from '../../utils/commonMethods';
 
 // import child components
-import { Counter } from '../counter';
 import { AppSimpleHeader } from '../appHeader';
+import { renderSpinner, switchStateField } from '../../utils/commonMethods';
 
 // export entry application component
 export class App extends React.Component {
     constructor(props) {
-        console.log( 'App.constructor()' );
+        // console.log( 'App.constructor()' );
         super(props);
 
         this.state = { 
@@ -25,8 +29,8 @@ export class App extends React.Component {
             },
             fileList: [],
             originalQuery: {
-                id: null,
-                fileName: null,
+                mapKey: null,
+                mapName: null,
                 x: null,
                 y: null
             },
@@ -37,18 +41,34 @@ export class App extends React.Component {
             selectedPoint: {
                 x: null,
                 y: null
-            }
+            },
+            fetchedData: {}
         };
+
+        this.renderSpinner = renderSpinner.bind(this);
+        this.switchStateField = switchStateField.bind(this);
+    }
+  
+    static fetchData = ( fetchParams ) => {
+        return fetchSMAXData(fetchParams);
     }
     
     componentDidMount() {
         if (window.initial_state) {
             console.log(window.initial_state);
+            this.switchStateField(
+                ['srcObj', 'tgtObj', 'queryCoords', 'fetchedData'],
+                [
+                    window.initial_state.requestData.srcObj,
+                    window.initial_state.requestData.tgtObj,
+                    window.initial_state.requestData.queryCoords,
+                    window.initial_state.fetchedData
+                ]);
         }
     }
     // render view
     render() {
-        console.log( 'App.render()' );
+        // console.log( 'App.render()' );
 
         return (
             <div className='ui container'>
@@ -62,16 +82,7 @@ export class App extends React.Component {
                         exact={ true }
                     >{`Counter ${this.token}`}</Link>
 
-                </div>
-
-                <Switch>
-                    <Route
-                        path='/'
-                        exact={ true }
-                        render={ () => <Counter name='Monica Geller'/> }
-                    />
-                </Switch>
-                
+                </div>               
             </div>
         );
     }
