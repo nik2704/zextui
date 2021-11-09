@@ -1,6 +1,6 @@
 {
   "name": "react-ssr",
-  "description": "A React server-side rendering (SSR) sample project.",
+  "description": "Map viewer based on a React server-side rendering (SSR) technology.",
   "version": "1.0.0",
   "scripts": {
     "start": "set NODE_ENV=development && webpack serve",
@@ -12,9 +12,13 @@
     "axios": "^0.21.4",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
+    "http-browserify": "^1.7.0",
     "https": "^1.0.0",
+    "https-browserify": "^1.0.0",
     "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react-dom": "^17.0.1",
+    "react-svgmt": "^1.1.11",
+    "transformation-matrix": "^2.9.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

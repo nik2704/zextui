@@ -71,6 +71,7 @@ module.exports = {
         
         // file extensions
         extensions: [ '.js', '.jsx', '.scss' ],
+        fallback: { "https": false }
     },
 
     // webpack optimizations
@@ -94,7 +95,10 @@ module.exports = {
         port: 8088,
         historyApiFallback: true,
     },
-
+    performance: {
+        maxEntrypointSize: 512000,
+        maxAssetSize: 512000
+    },
     // generate source map
     devtool: 'source-map'
 

@@ -1,3 +1,4 @@
+import React from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import axios from 'axios';
 import https from 'https';
@@ -52,5 +53,8 @@ export function fetchSMAXData ( fetchParams ) {
       } }
   ).then( response => {
       return response.data;
-  }).catch( err => console.log(err));
+  }).catch( err => {
+    console.log(err);
+    return null;
+  });
 }

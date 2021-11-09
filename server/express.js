@@ -38,12 +38,12 @@ app.get( /\.(js|css|map|ico)$/, express.static( path.resolve( __dirname, '../dis
 app.use( '*', async ( req, res ) => {
     // get matched route
     const matchRoute = routes.find( route => matchPath( req.path, route ) );
-    // console.log(req.baseUrl);
     // console.log(typeof matchRoute.component.fetchData);
 
     // fetch data of the matched component
     let componentData = { 
         token: req.cookies['SMAX_AUTH_TOKEN'] || null,
+        originalUrl: req.originalUrl,
         requestData: {
             srcObj: {
                 id: req.query.srcId || null,
@@ -68,10 +68,14 @@ app.use( '*', async ( req, res ) => {
 
     if( typeof matchRoute.component.fetchData === 'function' ) {
         fetchParams.token = componentData.token;
-        if (componentData.requestData.queryCoords.mapKey !== null) {
-            fetchParams.filter = `MapKey_c='${componentData.requestData.queryCoords.mapKey}'`;
-
-            componentData.fetchedData.ciColocated = await matchRoute.component.fetchData( fetchParams );
+        try {
+            if (componentData.requestData.queryCoords.mapKey !== null) {
+                fetchParams.filter = `MapKey_c='${componentData.requestData.queryCoords.mapKey}'`;
+    
+                componentData.fetchedData.ciColocated = await matchRoute.component.fetchData( fetchParams );
+            }    
+        } catch (e) {
+            console.log(e);
         }
         
         
@@ -82,16 +86,20 @@ app.use( '*', async ( req, res ) => {
             locFetchParams.filter = `Id='${componentData.requestData.tgtObj.id}'`;
 
             const attData = await matchRoute.component.fetchData( locFetchParams );
-
-            if (attData.entities) {
-                const arrArr = JSON.parse(attData.entities[0].properties.LocationAttachments);
-                const fileList = arrArr.complexTypeProperties.map((item) => {
-                    return {id: item.properties.id, file_name: item.properties.file_name, file_extension: item.properties.file_extension}
-                }).filter(item => item.file_extension === 'svg');
-    
-                componentData.fetchedData.locationFiles = fileList;
+            try {
+                if (attData != null) {
+                    if (attData.entities !== undefined) {
+                        const arrArr = JSON.parse(attData.entities[0].properties.LocationAttachments);
+                        const fileList = arrArr.complexTypeProperties.map((item) => {
+                            return {id: item.properties.id, file_name: item.properties.file_name, file_extension: item.properties.file_extension}
+                        }).filter(item => item.file_extension === 'svg');
+            
+                        componentData.fetchedData.locationFiles = fileList;
+                    }
+                }
+            } catch (e) {
+                console.log(e);
             }
-
         }
     }
 
