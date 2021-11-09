@@ -5,7 +5,7 @@ export const SYSTEM_VARS = {
     TENANTID: '740675490',
     TENANTHOST: 'zsmaxcp.lab.swdemo.ru',
     TENANTPORT: '443',    
-    DEVICELISTLAYOUT: 'Id,DisplayLabel,MapX_c,MapY_c,SubType,OwnedByPerson.Name',
+    DEVICELISTLAYOUT: 'Id,DisplayLabel,MapX_c,MapY_c,MapKey_c,SubType,OwnedByPerson.Name',
     LOCATIONFILELAYOUT: 'Id,DisplayLabel,LocationAttachments',
     DEVICEFULLLAYOUT: 'Id,SubType,DisplayLabel,HostName,OsName,Brand,Brand.DisplayLabel,AssetModel,AssetModel.DisplayLabel,SerialNumber,PhaseId,AssetTag,Barcode,EmsCreationTime,FirstInstallationDate,PlannedRetirementDate,EntryDate,LastInventoriedDate,Model,CostCenter.Code,CostCenter,CostCenter.DisplayLabel,OwnedByPerson.Upn,LocatedAtLocation.Name,LocatedAtLocation.DisplayLabel,AssetModel.DisplayLabel,LocatedAtLocation.Code,LocatedAtLocation.Id'
 };

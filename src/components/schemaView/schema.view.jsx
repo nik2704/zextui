@@ -60,6 +60,54 @@ export function SchemaView(props) {
         )    
     }
 
+    const renderList = () => {
+      if (props.state.showOtherCIs === true) {
+        if (props.state.fetchedData.ciColocated.entities !== undefined) {
+          if (props.state.fetchedData.ciColocated.entities.length > 0) {
+              return (
+                <div className="ui relaxed divided list">
+                  {props.state.fetchedData.ciColocated.entities.filter(
+                    item => (item.properties.Id != props.state.currentCi.properties.Id && item.properties.MapKey_c === props.state.selectedMap.id)
+                  ).map( (item, idx) => {
+                    return (
+                      <div className="item" key={`${idx}-${item.properties.Id}`}>
+                        <i className='large server middle aligned icon'></i>
+                        <div className="content" onMouseEnter={e => mouseEnter(e, item.properties.Id)} onMouseLeave={e => mouseLeave(e, item.properties.Id)}>
+                          <a href={`https://${SYSTEM_VARS.TENANTHOST}/saw/Device/${item.properties.Id}/general?TENANTID=${SYSTEM_VARS.TENANTID}`} className="header" target="_blank">{item.properties.DisplayLabel}</a>
+                          <div className="description">{`Owner: ${item.related_properties.OwnedByPerson.Name}`}</div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )
+          }
+        }
+      }
+
+      return '';
+    }
+
+    const mouseEnter = ( e, id ) => {
+      e.preventDefault();
+
+      let figure = Viewer.current.ViewerDOM.getElementById(`${id}-rect`);    
+
+      if ( figure !== null) {
+        figure.setAttributeNS(null,"fill","gold");
+      }
+    }
+
+    const mouseLeave = ( e, id ) => {
+      e.preventDefault();
+
+      let figure = Viewer.current.ViewerDOM.getElementById(`${id}-rect`);    
+
+      if ( figure !== null) {
+        figure.setAttributeNS(null,"fill","white");
+      }
+    }
+
     const renderContent = () => {
         if (svgLink !== null) {
           return (
@@ -131,40 +179,42 @@ export function SchemaView(props) {
             (props.state.selectedMap.id !== null) && 
             (props.state.selectedMap.file_name !== null) && 
             (props.state.selectedPoint.x !== null) && 
-            (props.state.selectedPoint.y !== null)
+            (props.state.selectedPoint.y !== null) &&
+            (props.state.selectedMap.id === props.state.currentCi.properties.MapKey_c)
             ) {
           addFigure(props.state.selectedPoint.x, props.state.selectedPoint.y, 'red', currentTitleObj);
         }
     }
 
     const doDrawOthersCIs = () => {
-        if (props.state.showOtherCIs === true) {
-            if (props.state.fetchedData.ciColocated.entities !== undefined) {
-                if (props.state.fetchedData.ciColocated.entities.length > 0) {
-                    props.state.fetchedData.ciColocated.entities.forEach(item => {
+      if (props.state.showOtherCIs === true) {
+        if (props.state.fetchedData.ciColocated.entities !== undefined) {
+            if (props.state.fetchedData.ciColocated.entities.length > 0) {
+                props.state.fetchedData.ciColocated.entities.forEach(item => {
+                  if (item.properties.MapKey_c === props.state.selectedMap.id) {
+                    if (item.properties.Id != props.state.currentCi.properties.Id) {
+                      const x = item.properties.MapX_c || 0;
+                      const y = item.properties.MapY_c || 0;
+                      const DisplayLabel = item.properties.DisplayLabel;
 
-                      if (item.properties.Id != props.state.currentCi.properties.Id) {
-                        const x = item.properties.MapX_c || 0;
-                        const y = item.properties.MapY_c || 0;
-                        const DisplayLabel = item.properties.DisplayLabel;
-
-                        drawFigure(x, y, 'green', {
-                          id: item.properties.Id,
-                          subType: item.properties.SubType,
-                          displayLabel: item.properties.DisplayLabel,
-                          owner: item.related_properties.OwnedByPerson.Name
-                        });
-                      }
-                    });
-                }
+                      drawFigure(x, y, 'green', {
+                        id: item.properties.Id,
+                        subType: item.properties.SubType,
+                        displayLabel: item.properties.DisplayLabel,
+                        owner: item.related_properties.OwnedByPerson.Name
+                      });
+                    }
+                  }
+                });
             }
-        } else {
-          props.state.fetchedData.ciColocated.entities.forEach(item => {
-            if (Viewer.current != null && props.state.currentCi.properties.Id != item.properties.Id) {
-              removeElements(item.properties.Id);
-            }
-          });
         }
+      } else {
+        props.state.fetchedData.ciColocated.entities.forEach(item => {
+          if (Viewer.current != null && props.state.currentCi.properties.Id != item.properties.Id) {
+            removeElements(item.properties.Id);
+          }
+        });
+      }
     }
 
     const removeElements = (baseId) => {
@@ -334,6 +384,7 @@ export function SchemaView(props) {
     return (
         <div>
             {renderContent()}
+            {renderList()}
             {renderModal()}
         </div>
     )
