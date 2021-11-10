@@ -71,7 +71,11 @@ module.exports = {
         
         // file extensions
         extensions: [ '.js', '.jsx', '.scss' ],
-        fallback: { "https": false }
+        fallback: {
+            "http": require.resolve("stream-http"),
+            "https": require.resolve("https-browserify"),
+            "buffer": false
+        }
     },
 
     // webpack optimizations

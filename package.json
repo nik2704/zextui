@@ -18,7 +18,10 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-svgmt": "^1.1.11",
-    "transformation-matrix": "^2.9.0"
+    "stream-http": "^3.2.0",
+    "transformation-matrix": "^2.9.0",
+    "webpack": "^5.10.0",
+    "webpack-cli": "^4.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
@@ -40,8 +43,6 @@
     "node-sass": "^5.0.0",
     "react-router-dom": "^5.2.0",
     "sass-loader": "^10.1.0",
-    "webpack": "^5.10.0",
-    "webpack-cli": "^4.2.0",
     "webpack-dev-server": "^3.11.0"
   }
 }

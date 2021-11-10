@@ -54,7 +54,41 @@ export function fetchSMAXData ( fetchParams ) {
   ).then( response => {
       return response.data;
   }).catch( err => {
-    console.log(err);
+    console.log(`ERROR fetching data: `);
+    console.log(fetchParams);
     return null;
   });
+}
+
+export function postSMAXData ( postParams ) {
+
+  let httpsAgent = new https.Agent({  
+    rejectUnauthorized: false
+  });
+
+  const postInstance = axios.create({
+    httpsAgent: httpsAgent
+  });
+
+  const url = `https://${postParams.thost}/rest/${postParams.tid}/ems/bulk`;
+  const data = postParams.body;
+
+  return postInstance.post(url,
+    { 
+      headers: {
+        "Content-Type": "application/json",
+        "User-Agent": "Apache-HttpClient/4.1",
+        "Cookie": `TENANTID=${postParams.tid}`,
+        "Cookie": `SMAX_AUTH_TOKEN=${postParams.token}`
+      },
+      data
+    }
+  ).then( response => {
+      return { status: 'OK', data: response.data };
+  }).catch( err => {
+    console.log(`ERROR posting data: `);
+    console.log(postParams);
+    return { status: 'ERROR' };
+  });
+
 }

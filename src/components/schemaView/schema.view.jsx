@@ -4,6 +4,7 @@ import {ReactSvgPanZoomLoader} from './react-svg-pan-zoom-loader';
 import {INITIAL_VALUE, ReactSVGPanZoom, TOOL_NONE, Toolbar, fitSelection, zoomOnViewerCenter, fitToViewer} from './react-svg-pan-zoom';
 import { SYSTEM_VARS } from '../../../config/config';
 import { Modal } from '../modal';
+import { postSMAXData } from '../../utils/commonMethods';
 
 export function SchemaView(props) {
     const Viewer = useRef(null);
@@ -237,67 +238,69 @@ export function SchemaView(props) {
     }
 
     const drawFigure = (x, y, color, titleObj) => {
-        let root = Viewer.current.ViewerDOM.getElementsByTagName('svg')[0];
-        let oldCircle = Viewer.current.ViewerDOM.getElementById(titleObj.id);    
-        let oldCircleText = Viewer.current.ViewerDOM.getElementById(`${titleObj.id}-text`);    
-        let oldCircleRect = Viewer.current.ViewerDOM.getElementById(`${titleObj.id}-rect`);    
-    
-        let circles = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-        circles.setAttribute("cx",x);
-        circles.setAttribute("cy",y);
-        circles.setAttribute("r",10);
-        circles.setAttribute("stroke", color);
-        circles.setAttribute("stroke-width", 3);
-        circles.setAttribute("fill", color);
-        circles.setAttribute("id", titleObj.id);
-    
-        if ( oldCircle !== null) {
-          root.removeChild(oldCircle);
-        }
-
-        if ( oldCircleText !== null) {
-          root.removeChild(oldCircleText);
-        }
-        
-        if ( oldCircleRect !== null) {
-          root.removeChild(oldCircleRect);
-        }
-
-        let rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-
-        rect.setAttribute('width', '300');
-        rect.setAttribute('height', '40');
-        rect.setAttribute('x', x - 20);
-        rect.setAttribute('y', y - 21);
-        rect.setAttribute('fill', '#fff');
-        rect.setAttribute('stroke', color);
-        rect.setAttribute('stroke-width', '2');
-        rect.setAttribute('rx', '7');
-        rect.setAttribute('id', `${titleObj.id}-rect`);
-
-        const txt = `Id:${titleObj.id}\nSubType:${titleObj.subType}\nOwner:${titleObj.owner}`;
-
-        let tx = parseInt(new Number(x).toFixed()) + 20, ty = parseInt(new Number(y).toFixed()) + 7;        
-        let newText = document.createElementNS("http://www.w3.org/2000/svg","text");
-        newText.setAttributeNS(null,"x", tx);
-        newText.setAttributeNS(null,"y", ty);
-        newText.setAttributeNS(null,"fill", color);
-        newText.setAttributeNS(null,"width","100%");
-        newText.setAttributeNS(null,"height","auto");
-        newText.setAttributeNS(null,"font-size","22");
-        newText.setAttributeNS(null,"id",`${titleObj.id}-text`);
-        newText.appendChild(document.createTextNode(titleObj.displayLabel));
-        
-        circles.appendChild(getTitleNode(txt));
-        rect.appendChild(getTitleNode(txt));
-        newText.appendChild(getTitleNode(txt));  
-
-        root.appendChild(rect);
-        root.appendChild(circles);
-        root.appendChild(newText);
-
-        if (titleObj.id === props.state.currentCi.properties.Id) {
-            setSelectedCoords({x, y, rootObj: root, childObj: [circles, rect, newText]});
+        if (Viewer.current !== null) {
+          let root = Viewer.current.ViewerDOM.getElementsByTagName('svg')[0];
+          let oldCircle = Viewer.current.ViewerDOM.getElementById(titleObj.id);    
+          let oldCircleText = Viewer.current.ViewerDOM.getElementById(`${titleObj.id}-text`);    
+          let oldCircleRect = Viewer.current.ViewerDOM.getElementById(`${titleObj.id}-rect`);    
+      
+          let circles = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+          circles.setAttribute("cx",x);
+          circles.setAttribute("cy",y);
+          circles.setAttribute("r",10);
+          circles.setAttribute("stroke", color);
+          circles.setAttribute("stroke-width", 3);
+          circles.setAttribute("fill", color);
+          circles.setAttribute("id", titleObj.id);
+      
+          if ( oldCircle !== null) {
+            root.removeChild(oldCircle);
+          }
+  
+          if ( oldCircleText !== null) {
+            root.removeChild(oldCircleText);
+          }
+          
+          if ( oldCircleRect !== null) {
+            root.removeChild(oldCircleRect);
+          }
+  
+          let rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+  
+          rect.setAttribute('width', '300');
+          rect.setAttribute('height', '40');
+          rect.setAttribute('x', x - 20);
+          rect.setAttribute('y', y - 21);
+          rect.setAttribute('fill', '#fff');
+          rect.setAttribute('stroke', color);
+          rect.setAttribute('stroke-width', '2');
+          rect.setAttribute('rx', '7');
+          rect.setAttribute('id', `${titleObj.id}-rect`);
+  
+          const txt = `Id:${titleObj.id}\nSubType:${titleObj.subType}\nOwner:${titleObj.owner}`;
+  
+          let tx = parseInt(new Number(x).toFixed()) + 20, ty = parseInt(new Number(y).toFixed()) + 7;        
+          let newText = document.createElementNS("http://www.w3.org/2000/svg","text");
+          newText.setAttributeNS(null,"x", tx);
+          newText.setAttributeNS(null,"y", ty);
+          newText.setAttributeNS(null,"fill", color);
+          newText.setAttributeNS(null,"width","100%");
+          newText.setAttributeNS(null,"height","auto");
+          newText.setAttributeNS(null,"font-size","22");
+          newText.setAttributeNS(null,"id",`${titleObj.id}-text`);
+          newText.appendChild(document.createTextNode(titleObj.displayLabel));
+          
+          circles.appendChild(getTitleNode(txt));
+          rect.appendChild(getTitleNode(txt));
+          newText.appendChild(getTitleNode(txt));  
+  
+          root.appendChild(rect);
+          root.appendChild(circles);
+          root.appendChild(newText);
+  
+          if (titleObj.id === props.state.currentCi.properties.Id) {
+              setSelectedCoords({x, y, rootObj: root, childObj: [circles, rect, newText]});
+          }
         }
     }
 
@@ -371,21 +374,32 @@ export function SchemaView(props) {
         
         setShowModal(true);
 
-        // const params = { webpath: 'update' };
-        // const postReq = new queryObj(props.state.token, params);
-        
-        // postReq.postData(JSON.stringify(updtBody))
-        // .then(updateRespnse => {
-        //   console.log(updateRespnse);
-        //  setShowModal(false);
-        // });
+        let postParams = {
+          thost: SYSTEM_VARS.TENANTHOST,
+          tid: SYSTEM_VARS.TENANTID,
+          token: props.state.token,
+          body: updtBody
+        };
+
+        postSMAXData(postParams)
+        .then( postRes => {
+          console.log(`Updated with ststus: ${postRes.status}`);
+
+          setShowModal(false);
+        })
+        .catch(err => {
+          console.log(err);
+          setShowModal(false);
+        })
     }
 
-    return (
+    if (svgLink !== null) {
+      return (
         <div>
-            {renderContent()}
-            {renderList()}
-            {renderModal()}
-        </div>
-    )
+          {renderContent()}
+          {renderList()}
+          {renderModal()}
+        </div>          
+      )
+    } else return '';
   }

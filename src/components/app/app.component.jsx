@@ -75,26 +75,32 @@ export class App extends React.Component {
                 currentCiId =  window.initial_state.requestData.srcObj.id;
             
             if (mapKey !== null) {
-                if (window.initial_state.fetchedData !== null) {
-                    if (window.initial_state.fetchedData.locationFiles.length > 0) {
-                        selectedMap = window.initial_state.fetchedData.locationFiles.find(item => item.id === mapKey );
-
-                        if (typeof selectedMap === "object" && selectedMap.id) {
-                            mode = 'mapview';
+                if (window.initial_state.token !== null) {
+                    if (Object.keys(window.initial_state.fetchedData.locationFiles).length > 0) {
+                        if (window.initial_state.fetchedData.locationFiles.length > 0) {
+                            selectedMap = window.initial_state.fetchedData.locationFiles.find(item => item.id === mapKey );
+    
+                            if (typeof selectedMap === "object" && selectedMap.id) {
+                                mode = 'mapview';
+                            }
+                        } else {
+                            mode = 'error';
+                        }
+    
+                        if (Object.keys(window.initial_state.fetchedData.ciColocated).length > 0) {
+                            if (window.initial_state.fetchedData.ciColocated.entities.length > 0) {
+                                currentCi = window.initial_state.fetchedData.ciColocated.entities.find(item => item.properties.Id === currentCiId );
+        
+                                if (typeof currentCi === "object" && currentCi.properties.id) {
+                                    mode = 'mapview';
+                                }
+                            }
                         }
                     } else {
                         mode = 'error';
                     }
-
-                    if (window.initial_state.fetchedData.ciColocated.entities.length > 0) {
-                        currentCi = window.initial_state.fetchedData.ciColocated.entities.find(item => item.properties.Id === currentCiId );
-
-                        if (typeof currentCi === "object" && currentCi.properties.id) {
-                            mode = 'mapview';
-                        }
-                    } else {
-                        mode = 'error';
-                    }
+                } else {
+                    mode = 'error';
                 }
             }
 

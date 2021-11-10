@@ -68,39 +68,43 @@ app.use( '*', async ( req, res ) => {
 
     if( typeof matchRoute.component.fetchData === 'function' ) {
         fetchParams.token = componentData.token;
-        try {
-            if (componentData.requestData.queryCoords.mapKey !== null) {
-                fetchParams.filter = `MapKey_c='${componentData.requestData.queryCoords.mapKey}'`;
-    
-                componentData.fetchedData.ciColocated = await matchRoute.component.fetchData( fetchParams );
-            }    
-        } catch (e) {
-            console.log(e);
-        }
-        
-        
-        if (componentData.requestData.tgtObj.id !== null) {
-            let locFetchParams = fetchParams;
-            locFetchParams.objType = 'Location';
-            locFetchParams.layout = SYSTEM_VARS['LOCATIONFILELAYOUT'];
-            locFetchParams.filter = `Id='${componentData.requestData.tgtObj.id}'`;
 
-            const attData = await matchRoute.component.fetchData( locFetchParams );
+        if (fetchParams.token !== null) {
             try {
-                if (attData != null) {
-                    if (attData.entities !== undefined) {
-                        const arrArr = JSON.parse(attData.entities[0].properties.LocationAttachments);
-                        const fileList = arrArr.complexTypeProperties.map((item) => {
-                            return {id: item.properties.id, file_name: item.properties.file_name, file_extension: item.properties.file_extension}
-                        }).filter(item => item.file_extension === 'svg');
-            
-                        componentData.fetchedData.locationFiles = fileList;
+                if (componentData.requestData.queryCoords.mapKey !== null) {
+                    fetchParams.filter = `MapKey_c='${componentData.requestData.queryCoords.mapKey}'`;
+        
+                    componentData.fetchedData.ciColocated = await matchRoute.component.fetchData( fetchParams );
+                    
+                    if (componentData.fetchedData.ciColocated != null) {
+                        if (componentData.requestData.tgtObj.id !== null) {
+                            let locFetchParams = fetchParams;
+                            locFetchParams.objType = 'Location';
+                            locFetchParams.layout = SYSTEM_VARS['LOCATIONFILELAYOUT'];
+                            locFetchParams.filter = `Id='${componentData.requestData.tgtObj.id}'`;
+                
+                            const attData = await matchRoute.component.fetchData( locFetchParams );
+                            try {
+                                if (attData != null) {
+                                    if (attData.entities !== undefined) {
+                                        const arrArr = JSON.parse(attData.entities[0].properties.LocationAttachments);
+                                        const fileList = arrArr.complexTypeProperties.map((item) => {
+                                            return {id: item.properties.id, file_name: item.properties.file_name, file_extension: item.properties.file_extension}
+                                        }).filter(item => item.file_extension === 'svg');
+                            
+                                        componentData.fetchedData.locationFiles = fileList;
+                                    }
+                                }
+                            } catch (e) {
+                                console.log(e);
+                            }
+                        }
                     }
-                }
+                }    
             } catch (e) {
                 console.log(e);
             }
-        }
+        } 
     }
 
     // read `index.html` file
