@@ -75,9 +75,13 @@ app.use( '*', async ( req, res ) => {
                     fetchParams.filter = `MapKey_c='${componentData.requestData.queryCoords.mapKey}'`;
         
                     componentData.fetchedData.ciColocated = await matchRoute.component.fetchData( fetchParams );
-                    
+                }
+
+                console.log('0 - fetch DTAT');
+                console.log(componentData.requestData.tgtObj.id);
 //                    if (componentData.fetchedData.ciColocated != null) {
                         if (componentData.requestData.tgtObj.id !== null) {
+                            console.log('0 ---> Start');
                             let locFetchParams = fetchParams;
                             locFetchParams.objType = 'Location';
                             locFetchParams.layout = SYSTEM_VARS['LOCATIONFILELAYOUT'];
@@ -110,7 +114,7 @@ app.use( '*', async ( req, res ) => {
                             }
                         }
 //                    }
-                }    
+//                }    
             } catch (e) {
                 console.log(e);
             }

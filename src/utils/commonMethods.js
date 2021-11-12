@@ -44,8 +44,6 @@ export function fetchSMAXData ( fetchParams ) {
       url += `&filter=${fetchParams.filter}`;
   }
 
-  console.log(url);
-  
   return instance.get(url,
       { headers: {
           "Content-Type": "application/json",
