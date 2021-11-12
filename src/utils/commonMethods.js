@@ -71,8 +71,9 @@ export function postSMAXData ( postParams ) {
   const postInstance = axios.create({
     httpsAgent: httpsAgent
   });
+  console.log(postParams);
 
-  const url = `https://${postParams.thost}:${fetchParams.tport}/rest/${postParams.tid}/ems/bulk`;
+  const url = `https://${postParams.thost}:${postParams.tport}/rest/${postParams.tid}/ems/bulk`;
   const data = postParams.body;
 
   console.log(url);
@@ -91,7 +92,6 @@ export function postSMAXData ( postParams ) {
       return { status: 'OK', data: response.data };
   }).catch( err => {
     console.log(`ERROR posting data: `);
-    console.log(postParams);
     return { status: 'ERROR' };
   });
 

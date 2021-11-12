@@ -383,15 +383,15 @@ export function SchemaView(props) {
         };
 
         postSMAXData(postParams)
-        .then( postRes => {
-          console.log(`Updated with status: ${postRes.status}`);
+          .then( postRes => {
+           console.log(`Updated with status: ${postRes.status}`);
 
-          //setShowModal(false);
-        })
-        .catch(err => {
-          console.log(err);
-          //setShowModal(false);
-        })
+            //setShowModal(false);
+          })
+          .catch(err => {
+            console.log(err);
+            //setShowModal(false);
+          })
     }
 
     if (svgLink !== null) {

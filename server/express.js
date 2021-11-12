@@ -76,7 +76,7 @@ app.use( '*', async ( req, res ) => {
         
                     componentData.fetchedData.ciColocated = await matchRoute.component.fetchData( fetchParams );
                     
-                    if (componentData.fetchedData.ciColocated != null) {
+//                    if (componentData.fetchedData.ciColocated != null) {
                         if (componentData.requestData.tgtObj.id !== null) {
                             let locFetchParams = fetchParams;
                             locFetchParams.objType = 'Location';
@@ -99,7 +99,7 @@ app.use( '*', async ( req, res ) => {
                                 console.log(e);
                             }
                         }
-                    }
+//                    }
                 }    
             } catch (e) {
                 console.log(e);
