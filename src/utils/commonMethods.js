@@ -39,7 +39,7 @@ export function fetchSMAXData ( fetchParams ) {
       })
   });
 
-  let url = `https://${fetchParams.thost}:${fetchParams.tport}/rest/${fetchParams.tid}/ems/${fetchParams.objType}?layout=${fetchParams.layout}'`;
+  let url = `https://${fetchParams.thost}:${fetchParams.tport}/rest/${fetchParams.tid}/ems/${fetchParams.objType}?layout=${fetchParams.layout}`;
   if (fetchParams.filter !== null) {
       url += `&filter=${fetchParams.filter}`;
   }
@@ -77,7 +77,7 @@ export function postSMAXData ( postParams ) {
 
   console.log(url);
 
-  return postInstance.post(url,
+  postInstance.post(url,
     { 
       headers: {
         "Content-Type": "application/json",

@@ -55,7 +55,7 @@ export function SchemaView(props) {
     
         return (
             <Modal
-                title='Saving coordinated in SMAX record'
+                title='Saving coordinates in SMAX record'
                 // onDismiss={() => history.push('')}
             />
         )    
@@ -372,7 +372,7 @@ export function SchemaView(props) {
             "operation": "UPDATE"
         }
         
-        setShowModal(true);
+        //setShowModal(true);
 
         let postParams = {
           thost: SYSTEM_VARS.TENANTHOST,
@@ -384,13 +384,13 @@ export function SchemaView(props) {
 
         postSMAXData(postParams)
         .then( postRes => {
-          console.log(`Updated with ststus: ${postRes.status}`);
+          console.log(`Updated with status: ${postRes.status}`);
 
-          setShowModal(false);
+          //setShowModal(false);
         })
         .catch(err => {
           console.log(err);
-          setShowModal(false);
+          //setShowModal(false);
         })
     }
 
