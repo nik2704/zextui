@@ -2,10 +2,13 @@ import React from "react";
 
 export class MapList extends React.Component {
     onSelectItem(id, file_name) {
-        this.props.switchStateField(['tmpSelectedMap', 'selectedMap'], [this.props.state.selectedMap, {
+        let newSelection = {
             id: id,
             file_name: file_name
-        }]);
+        };
+
+        let selectedMap = this.props.state.selectedMap.id !== null ? this.props.state.selectedMap : newSelection;
+        this.props.switchStateField(['tmpSelectedMap', 'selectedMap'], [selectedMap, newSelection]);
     }
 
     renderFileList() {

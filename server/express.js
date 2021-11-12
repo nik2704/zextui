@@ -73,46 +73,41 @@ app.use( '*', async ( req, res ) => {
             try {
                 if (componentData.requestData.queryCoords.mapKey !== null) {
                     fetchParams.filter = `MapKey_c='${componentData.requestData.queryCoords.mapKey}'`;
-        
-                    componentData.fetchedData.ciColocated = await matchRoute.component.fetchData( fetchParams );
+                } else {
+                    fetchParams.filter = `Id='${componentData.requestData.srcObj.id}'`;
                 }
 
-                console.log('0 - fetch DTAT');
-                console.log(componentData.requestData.tgtObj.id);
+                if (componentData.requestData.srcObj.id !== null) {
+                    try {
+                        componentData.fetchedData.ciColocated = await matchRoute.component.fetchData( fetchParams );
+                    } catch (err) {
+                        console.log(err);
+                    }
+                }
+
 //                    if (componentData.fetchedData.ciColocated != null) {
-                        if (componentData.requestData.tgtObj.id !== null) {
-                            console.log('0 ---> Start');
-                            let locFetchParams = fetchParams;
-                            locFetchParams.objType = 'Location';
-                            locFetchParams.layout = SYSTEM_VARS['LOCATIONFILELAYOUT'];
-                            locFetchParams.filter = `Id='${componentData.requestData.tgtObj.id}'`;
-                
-                            
-                            try {
-                                console.log('1 - start LOC FIND');
-                                const attData = await matchRoute.component.fetchData( locFetchParams );
-                                console.log('2 - LOC RECEIVED');
-                                console.log(attData);
-                                if (attData !== null) {
-                                    console.log('3 - attData !== null');
-                                    console.log(attData.entities);
-                                    if (attData.entities !== undefined) {
-                                        console.log('4 - attData.entities !== undefined');
-                                        const arrArr = JSON.parse(attData.entities[0].properties.LocationAttachments);
-                                        console.log('5 - arrArr');
-                                        console.log(arrArr);
-                                        const fileList = arrArr.complexTypeProperties.map((item) => {
-                                            return {id: item.properties.id, file_name: item.properties.file_name, file_extension: item.properties.file_extension}
-                                        }).filter(item => item.file_extension === 'svg');
-                                        console.log('6 - fileList');
-                                        console.log(fileList);
-                                        componentData.fetchedData.locationFiles = fileList;
-                                    }
-                                }
-                            } catch (e) {
-                                console.log(e);
+                if (componentData.requestData.tgtObj.id !== null) {
+                    let locFetchParams = fetchParams;
+                    locFetchParams.objType = 'Location';
+                    locFetchParams.layout = SYSTEM_VARS['LOCATIONFILELAYOUT'];
+                    locFetchParams.filter = `Id='${componentData.requestData.tgtObj.id}'`;
+        
+                    
+                    try {
+                        const attData = await matchRoute.component.fetchData( locFetchParams );
+                        if (attData !== null) {
+                            if (attData.entities !== undefined) {
+                                const arrArr = JSON.parse(attData.entities[0].properties.LocationAttachments);
+                                const fileList = arrArr.complexTypeProperties.map((item) => {
+                                    return {id: item.properties.id, file_name: item.properties.file_name, file_extension: item.properties.file_extension}
+                                }).filter(item => item.file_extension === 'svg');
+                                componentData.fetchedData.locationFiles = fileList;
                             }
                         }
+                    } catch (e) {
+                        console.log(e);
+                    }
+                }
 //                    }
 //                }    
             } catch (e) {

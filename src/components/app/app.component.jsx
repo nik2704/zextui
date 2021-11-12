@@ -73,35 +73,34 @@ export class App extends React.Component {
                 currentCi = null,
                 mapKey = window.initial_state.requestData.queryCoords.mapKey,
                 currentCiId =  window.initial_state.requestData.srcObj.id;
-            
-            if (mapKey !== null) {
-                if (window.initial_state.token !== null) {
+
+            if (window.initial_state.token !== null) {
+                if (Object.keys(window.initial_state.fetchedData.ciColocated).length > 0) {
+                    if (window.initial_state.fetchedData.ciColocated.entities.length > 0) {
+                        currentCi = window.initial_state.fetchedData.ciColocated.entities.find(item => item.properties.Id === currentCiId );
+                        if (typeof currentCi === "object" && currentCi.properties.id) {
+                            mode = 'mapview';
+                        }
+                    }
+                }
+
+                if (mapKey !== null) {
                     if (Object.keys(window.initial_state.fetchedData.locationFiles).length > 0) {
                         if (window.initial_state.fetchedData.locationFiles.length > 0) {
                             selectedMap = window.initial_state.fetchedData.locationFiles.find(item => item.id === mapKey );
-    
+
                             if (typeof selectedMap === "object" && selectedMap.id) {
                                 mode = 'mapview';
                             }
                         } else {
                             mode = 'error';
                         }
-    
-                        if (Object.keys(window.initial_state.fetchedData.ciColocated).length > 0) {
-                            if (window.initial_state.fetchedData.ciColocated.entities.length > 0) {
-                                currentCi = window.initial_state.fetchedData.ciColocated.entities.find(item => item.properties.Id === currentCiId );
-        
-                                if (typeof currentCi === "object" && currentCi.properties.id) {
-                                    mode = 'mapview';
-                                }
-                            }
-                        }
                     } else {
                         mode = 'error';
                     }
-                } else {
-                    mode = 'error';
                 }
+            } else {
+                mode = 'error';
             }
 
             let stateFields = ['token','srcObj', 'tgtObj', 'queryCoords', 'fetchedData', 'originalUrl', 'mode'];
@@ -115,21 +114,20 @@ export class App extends React.Component {
                 mode
             ];
 
+            if (currentCi !== null) {
+                stateFields.push('currentCi');
+                stateValues.push(currentCi);    
+            };
+
             if (mode === 'mapview') {
                 stateFields.push('selectedMap');
                 stateValues.push({ id: selectedMap.id, file_name: selectedMap.file_name });
-
-                if (currentCi !== null) {
-                    stateFields.push('currentCi');
-                    stateValues.push(currentCi);    
-                }
 
                 if (window.initial_state.requestData.queryCoords.x !== null && window.initial_state.requestData.queryCoords.y !== null) {
                     stateFields.push('selectedPoint');
                     stateValues.push({ x: window.initial_state.requestData.queryCoords.x, y: window.initial_state.requestData.queryCoords.y});    
                 }
             }
-
 
             this.switchStateField(
                 stateFields,
