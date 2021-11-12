@@ -78,7 +78,7 @@ export function postSMAXData ( postParams ) {
 
   console.log(url);
 
-  postInstance.post(url,
+  return postInstance.post(url,
     { 
       headers: {
         "Content-Type": "application/json",
@@ -92,6 +92,7 @@ export function postSMAXData ( postParams ) {
       return { status: 'OK', data: response.data };
   }).catch( err => {
     console.log(`ERROR posting data: `);
+    console.log(err);
     return { status: 'ERROR' };
   });
 

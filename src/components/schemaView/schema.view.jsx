@@ -353,6 +353,7 @@ export function SchemaView(props) {
     }
 
     const onSave = (event) => {
+
         event.preventDefault();
     
         const updtBody = {
@@ -371,7 +372,6 @@ export function SchemaView(props) {
             ],
             "operation": "UPDATE"
         }
-        
         //setShowModal(true);
 
         let postParams = {

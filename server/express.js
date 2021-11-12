@@ -83,15 +83,25 @@ app.use( '*', async ( req, res ) => {
                             locFetchParams.layout = SYSTEM_VARS['LOCATIONFILELAYOUT'];
                             locFetchParams.filter = `Id='${componentData.requestData.tgtObj.id}'`;
                 
-                            const attData = await matchRoute.component.fetchData( locFetchParams );
+                            
                             try {
-                                if (attData != null) {
+                                console.log('1 - start LOC FIND');
+                                const attData = await matchRoute.component.fetchData( locFetchParams );
+                                console.log('2 - LOC RECEIVED');
+                                console.log(attData);
+                                if (attData !== null) {
+                                    console.log('3 - attData !== null');
+                                    console.log(attData.entities);
                                     if (attData.entities !== undefined) {
+                                        console.log('4 - attData.entities !== undefined');
                                         const arrArr = JSON.parse(attData.entities[0].properties.LocationAttachments);
+                                        console.log('5 - arrArr');
+                                        console.log(arrArr);
                                         const fileList = arrArr.complexTypeProperties.map((item) => {
                                             return {id: item.properties.id, file_name: item.properties.file_name, file_extension: item.properties.file_extension}
                                         }).filter(item => item.file_extension === 'svg');
-                            
+                                        console.log('6 - fileList');
+                                        console.log(fileList);
                                         componentData.fetchedData.locationFiles = fileList;
                                     }
                                 }
