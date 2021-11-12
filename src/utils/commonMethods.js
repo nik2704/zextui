@@ -39,11 +39,13 @@ export function fetchSMAXData ( fetchParams ) {
       })
   });
 
-  let url = `https://${fetchParams.thost}/rest/${fetchParams.tid}/ems/${fetchParams.objType}?layout=${fetchParams.layout}'`;
+  let url = `https://${fetchParams.thost}:${fetchParams.tport}/rest/${fetchParams.tid}/ems/${fetchParams.objType}?layout=${fetchParams.layout}'`;
   if (fetchParams.filter !== null) {
       url += `&filter=${fetchParams.filter}`;
   }
 
+  console.log(url);
+  
   return instance.get(url,
       { headers: {
           "Content-Type": "application/json",
@@ -70,8 +72,10 @@ export function postSMAXData ( postParams ) {
     httpsAgent: httpsAgent
   });
 
-  const url = `https://${postParams.thost}/rest/${postParams.tid}/ems/bulk`;
+  const url = `https://${postParams.thost}:${fetchParams.tport}/rest/${postParams.tid}/ems/bulk`;
   const data = postParams.body;
+
+  console.log(url);
 
   return postInstance.post(url,
     { 

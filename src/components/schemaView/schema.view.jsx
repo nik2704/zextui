@@ -32,7 +32,7 @@ export function SchemaView(props) {
 
     useEffect(() => {
         if (props.state.selectedMap.id !== null) {
-          setSvgLink(`http://${SYSTEM_VARS.TENANTHOST}/rest/${SYSTEM_VARS.TENANTID}/frs/file-list/${props.state.selectedMap.id}`);
+          setSvgLink(`https://${SYSTEM_VARS.TENANTHOST}/rest/${SYSTEM_VARS.TENANTID}/frs/file-list/${props.state.selectedMap.id}`);
           //setSvgLink(`http://${SYSTEM_VARS.TENANTHOST}:4050/att/instance?id=${props.state.selectedMap.id}&token=${props.state.token}`);
         }
     }, [props.state.selectedMap.id]);
@@ -376,6 +376,7 @@ export function SchemaView(props) {
 
         let postParams = {
           thost: SYSTEM_VARS.TENANTHOST,
+          tport: SYSTEM_VARS.TENANTPORT,
           tid: SYSTEM_VARS.TENANTID,
           token: props.state.token,
           body: updtBody
