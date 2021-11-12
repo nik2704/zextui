@@ -13,8 +13,6 @@ const fetchParams = {
     tid: SYSTEM_VARS['TENANTID'],
     thost: SYSTEM_VARS['TENANTHOST'],
     tport: SYSTEM_VARS['TENANTPORT'],
-    layout: SYSTEM_VARS['DEVICELISTLAYOUT'],
-    objType: 'Device',
     filter: null,
     token: null
 }
@@ -68,6 +66,8 @@ app.use( '*', async ( req, res ) => {
 
     if( typeof matchRoute.component.fetchData === 'function' ) {
         fetchParams.token = componentData.token;
+        fetchParams.objType = 'Device';
+        fetchParams.layout = SYSTEM_VARS['DEVICELISTLAYOUT'];
 
         if (fetchParams.token !== null) {
             try {

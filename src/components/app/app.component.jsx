@@ -143,7 +143,7 @@ export class App extends React.Component {
 
         switch (this.state.mode) {
             case 'unknown':
-                msg = 'The data was not loaded';
+                msg = 'The data is being prepared';
                 break;
             case 'mapview':
                 msg = `View the location file ${this.state.selectedMap.file_name}`;
