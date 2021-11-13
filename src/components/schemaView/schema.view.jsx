@@ -384,9 +384,12 @@ export function SchemaView(props) {
           body: updtBody
         };
 
-        postSMAXData(postParams);
+        let postRes = postSMAXData(postParams);
+        console.log(postRes);
 
+        setNeedSave(false);
         setShowModal(false);
+        
           // .then( postRes => {
           //  console.log(`Updated with status: ${postRes.status}`);
 

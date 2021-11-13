@@ -65,23 +65,24 @@ export function postSMAXData ( postParams ) {
   const url = `https://${postParams.thost}:${postParams.tport}/rest/${postParams.tid}/ems/bulk`;
   const data = postParams.body;
   axios.post(
-    url, 
-    data, 
+    url,
+    data,
     {
       withCredentials: true,
       headers: {
-          "Content-Type": "application/json",
-          "User-Agent": "Apache-HttpClient/4.1"
+          "Content-Type": "application/json"
         }
     }
   )
   .then(response => {
+        console.log('saved');
         return { status: 'OK', data: response.data };
     })
   .catch(function (error) {
     console.log(error);
     return { status: 'ERROR' };
   })
+
 
   // let httpsAgent = new https.Agent({  
   //   rejectUnauthorized: false
@@ -101,13 +102,14 @@ export function postSMAXData ( postParams ) {
   //   { 
   //     withCredentials: true,
   //     headers: {
-  //       "Content-Type": "application/json",
-  //       "User-Agent": "Apache-HttpClient/4.1"
-  //       "Cookie": `TENANTID=${postParams.tid}`,
-  //       "Cookie": `SMAX_AUTH_TOKEN=${postParams.token}`
+  //       "Content-Type": "application/json"
+  //       // "User-Agent": "Apache-HttpClient/4.1"
+  //       // "Cookie": `TENANTID=${postParams.tid}`,
+  //       // "Cookie": `SMAX_AUTH_TOKEN=${postParams.token}`
   //     }
   //   }
   // ).then( response => {
+  //     console.log('Data saved');
   //     return { status: 'OK', data: response.data };
   // }).catch( err => {
   //   console.log(`ERROR posting data: `);
