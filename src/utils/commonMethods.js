@@ -62,36 +62,57 @@ export function fetchSMAXData ( fetchParams ) {
 
 export function postSMAXData ( postParams ) {
 
-  let httpsAgent = new https.Agent({  
-    rejectUnauthorized: false
-  });
-
-  const postInstance = axios.create({
-    httpsAgent: httpsAgent
-  });
-  console.log(postParams);
-
   const url = `https://${postParams.thost}:${postParams.tport}/rest/${postParams.tid}/ems/bulk`;
   const data = postParams.body;
-
-  console.log(url);
-
-  postInstance.post(url,
-    { 
+  axios.post(
+    url, 
+    data, 
+    {
+      withCredentials: true,
       headers: {
-        "Content-Type": "application/json",
-        "User-Agent": "Apache-HttpClient/4.1",
-        "Cookie": `TENANTID=${postParams.tid}`,
-        "Cookie": `SMAX_AUTH_TOKEN=${postParams.token}`
-      },
-      data
+          "Content-Type": "application/json",
+          "User-Agent": "Apache-HttpClient/4.1"
+        }
     }
-  ).then( response => {
-      return { status: 'OK', data: response.data };
-  }).catch( err => {
-    console.log(`ERROR posting data: `);
-    console.log(err);
+  )
+  .then(response => {
+        return { status: 'OK', data: response.data };
+    })
+  .catch(function (error) {
+    console.log(error);
     return { status: 'ERROR' };
-  });
+  })
+
+  // let httpsAgent = new https.Agent({  
+  //   rejectUnauthorized: false
+  // });
+
+  // const postInstance = axios.create({
+  //   httpsAgent: httpsAgent
+  // });
+  // console.log(postParams);
+
+  // const url = `https://${postParams.thost}:${postParams.tport}/rest/${postParams.tid}/ems/bulk`;
+  // const data = postParams.body;
+
+  // console.log(url);
+
+  // postInstance.post(url, data,
+  //   { 
+  //     withCredentials: true,
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       "User-Agent": "Apache-HttpClient/4.1"
+  //       "Cookie": `TENANTID=${postParams.tid}`,
+  //       "Cookie": `SMAX_AUTH_TOKEN=${postParams.token}`
+  //     }
+  //   }
+  // ).then( response => {
+  //     return { status: 'OK', data: response.data };
+  // }).catch( err => {
+  //   console.log(`ERROR posting data: `);
+  //   console.log(err);
+  //   return { status: 'ERROR' };
+  // });
 
 }

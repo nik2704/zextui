@@ -7,7 +7,7 @@ import { Modal } from '../modal';
 import { postSMAXData } from '../../utils/commonMethods';
 
 export function SchemaView(props) {
-    console.log(props.state);
+    // console.log(props.state);
     const Viewer = useRef(null);
     const border = useRef(null);
     const [tool, setTool] = useState(TOOL_NONE);
@@ -384,11 +384,7 @@ export function SchemaView(props) {
           body: updtBody
         };
 
-        let posteResult = postSMAXData(postParams);
-
-        if (posteResult.status === 'OK') {
-          console.log('Coordinates were saved');
-        }
+        postSMAXData(postParams);
 
         setShowModal(false);
           // .then( postRes => {
