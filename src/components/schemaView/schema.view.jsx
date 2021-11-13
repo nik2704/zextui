@@ -33,8 +33,8 @@ export function SchemaView(props) {
 
     useEffect(() => {
         if (props.state.selectedMap.id !== null) {
-          //setSvgLink(`https://${SYSTEM_VARS.TENANTHOST}/rest/${SYSTEM_VARS.TENANTID}/frs/file-list/${props.state.selectedMap.id}`);
-          setSvgLink(`http://${SYSTEM_VARS.TENANTHOST}:4050/att/instance?id=${props.state.selectedMap.id}&token=${props.state.token}`);
+          setSvgLink(`https://${SYSTEM_VARS.TENANTHOST}/rest/${SYSTEM_VARS.TENANTID}/frs/file-list/${props.state.selectedMap.id}`);
+          //setSvgLink(`http://${SYSTEM_VARS.TENANTHOST}:4050/att/instance?id=${props.state.selectedMap.id}&token=${props.state.token}`);
         }
     }, [props.state.selectedMap.id]);
 
@@ -373,7 +373,8 @@ export function SchemaView(props) {
             ],
             "operation": "UPDATE"
         }
-        //setShowModal(true);
+        
+        setShowModal(true);
 
         let postParams = {
           thost: SYSTEM_VARS.TENANTHOST,
@@ -383,16 +384,22 @@ export function SchemaView(props) {
           body: updtBody
         };
 
-        postSMAXData(postParams)
-          .then( postRes => {
-           console.log(`Updated with status: ${postRes.status}`);
+        let posteResult = postSMAXData(postParams);
 
-            //setShowModal(false);
-          })
-          .catch(err => {
-            console.log(err);
-            //setShowModal(false);
-          })
+        if (posteResult.status === 'OK') {
+          console.log('Coordinates were saved');
+        }
+
+        setShowModal(false);
+          // .then( postRes => {
+          //  console.log(`Updated with status: ${postRes.status}`);
+
+          //   //setShowModal(false);
+          // })
+          // .catch(err => {
+          //   console.log(err);
+          //   //setShowModal(false);
+          // })
     }
 
     if (svgLink !== null) {

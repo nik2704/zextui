@@ -76,7 +76,7 @@ export function postSMAXData ( postParams ) {
 
   console.log(url);
 
-  return postInstance.post(url,
+  postInstance.post(url,
     { 
       headers: {
         "Content-Type": "application/json",
