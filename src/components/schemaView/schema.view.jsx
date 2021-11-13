@@ -31,7 +31,7 @@ export function SchemaView(props) {
     useEffect(() => {
         if (props.state.selectedMap.id !== null) {
           setSvgLink(`https://${props.state.cfg.thost}/rest/${props.state.cfg.tid}/frs/file-list/${props.state.selectedMap.id}`);
-          //setSvgLink(`http://${SYSTEM_VARS.TENANTHOST}:4050/att/instance?id=${props.state.selectedMap.id}&token=${props.state.token}`);
+          //setSvgLink(`http://${props.state.cfg.thost}:4050/att/instance?id=${props.state.selectedMap.id}&token=${props.state.token}`);
         }
     }, [props.state.selectedMap.id]);
 
@@ -45,11 +45,18 @@ export function SchemaView(props) {
         return (
             <Modal
                 title='Saving coordinates in SMAX record'
-                // onDismiss={() => history.push('')}
             />
         )    
     }
 
+    const getOwnerName = ( relProps ) => {
+      if (relProps.OwnedByPerson !== undefined) {
+        return relProps.OwnedByPerson.Name
+      } else {
+        return 'OWNER NOT SELECTED';
+      }
+    }
+    
     const renderList = () => {
       if (props.state.showOtherCIs === true) {
         if (props.state.fetchedData.ciColocated.entities !== undefined) {
@@ -64,7 +71,7 @@ export function SchemaView(props) {
                         <i className='large server middle aligned icon'></i>
                         <div className="content" onMouseEnter={e => mouseEnter(e, item.properties.Id)} onMouseLeave={e => mouseLeave(e, item.properties.Id)}>
                           <a href={`https://${props.state.cfg.thost}/saw/Device/${item.properties.Id}/general?TENANTID=${props.state.cfg.tid}`} className="header" target="_blank">{item.properties.DisplayLabel}</a>
-                          <div className="description">{`Owner: ${item.related_properties.OwnedByPerson.Name}`}</div>
+                          <div className="description">{getOwnerName(item.related_properties)}</div>
                         </div>
                       </div>
                     );
@@ -184,8 +191,8 @@ export function SchemaView(props) {
                       drawFigure(x, y, 'green', {
                         id: item.properties.Id,
                         subType: item.properties.SubType,
-                        displayLabel: item.properties.DisplayLabel,
-                        owner: item.related_properties.OwnedByPerson.Name
+                        displayLabel: DisplayLabel,
+                        owner: getOwnerName(item.related_properties)
                       });
                     }
                   }
