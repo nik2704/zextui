@@ -1,13 +1,10 @@
 import React, { useRef, useState, useEffect } from 'react';
 import {ReactSvgPanZoomLoader} from './react-svg-pan-zoom-loader';
-// import {INITIAL_VALUE, ReactSVGPanZoom, TOOL_NONE, Toolbar} from './react-svg-pan-zoom';
 import {INITIAL_VALUE, ReactSVGPanZoom, TOOL_NONE, Toolbar, fitSelection, zoomOnViewerCenter, fitToViewer} from './react-svg-pan-zoom';
-//import { SYSTEM_VARS } from '../../../config/config';
 import { Modal } from '../modal';
 import { postSMAXData } from '../../utils/commonMethods';
 
 export function SchemaView(props) {
-    // console.log(props.state);
     const Viewer = useRef(null);
     const border = useRef(null);
     const [tool, setTool] = useState(TOOL_NONE);
@@ -34,7 +31,6 @@ export function SchemaView(props) {
     useEffect(() => {
         if (props.state.selectedMap.id !== null) {
           setSvgLink(`https://${props.state.cfg.thost}/rest/${props.state.cfg.tid}/frs/file-list/${props.state.selectedMap.id}`);
-          //setSvgLink(`https://${SYSTEM_VARS.TENANTHOST}/rest/${SYSTEM_VARS.TENANTID}/frs/file-list/${props.state.selectedMap.id}`);
           //setSvgLink(`http://${SYSTEM_VARS.TENANTHOST}:4050/att/instance?id=${props.state.selectedMap.id}&token=${props.state.token}`);
         }
     }, [props.state.selectedMap.id]);
@@ -42,16 +38,7 @@ export function SchemaView(props) {
     useEffect(() => {
         doDrawOthersCIs();
     }, [props.state.showOtherCIs]);
-    /* Read all the available methods in the documentation */
-    // const _zoomOnViewerCenter1 = () => Viewer.current.zoomOnViewerCenter(1.1)
-    // const _fitSelection1 = () => Viewer.current.fitSelection(40, 40, 200, 200)
-    // const _fitToViewer1 = () => Viewer.current.fitToViewer()
-  
-    /* keep attention! handling the state in the following way doesn't fire onZoom and onPam hooks */
-    // const _zoomOnViewerCenter2 = () => setValue(zoomOnViewerCenter(value, 1.1))
-    // const _fitSelection2 = () => setValue(fitSelection(value, 40, 40, 200, 200))
-    // const _fitToViewer2 = () => setValue(fitToViewer(value))
-  
+ 
     const renderModal = () => {
         if (showModal === false) return '';
     
@@ -76,7 +63,6 @@ export function SchemaView(props) {
                       <div className="item" key={`${idx}-${item.properties.Id}`}>
                         <i className='large server middle aligned icon'></i>
                         <div className="content" onMouseEnter={e => mouseEnter(e, item.properties.Id)} onMouseLeave={e => mouseLeave(e, item.properties.Id)}>
-                          {/* <a href={`https://${SYSTEM_VARS.TENANTHOST}/saw/Device/${item.properties.Id}/general?TENANTID=${SYSTEM_VARS.TENANTID}`} className="header" target="_blank">{item.properties.DisplayLabel}</a> */}
                           <a href={`https://${props.state.cfg.thost}/saw/Device/${item.properties.Id}/general?TENANTID=${props.state.cfg.tid}`} className="header" target="_blank">{item.properties.DisplayLabel}</a>
                           <div className="description">{`Owner: ${item.related_properties.OwnedByPerson.Name}`}</div>
                         </div>
@@ -132,11 +118,6 @@ export function SchemaView(props) {
                         onChangeValue={setValue}
                         undo={undoFigure}
                         Toolbar={Toolbar}
-                       
-                        //onMouseMove={e => console.log(e.target)}
-                        // toolbarProps={toolbarProps}
-                        // onZoom={e => console.log('zoom')}
-                        //onPan={e => console.log('pan')}
                         onClick={event => onClick(event)}
                       >
                       <svg width={2500} height={1200}>
@@ -165,7 +146,6 @@ export function SchemaView(props) {
                     </React.Fragment>
                   )
                 }}/>
-              {/* {mixWithCircle()} */}
             </div>
       
         )
@@ -386,21 +366,16 @@ export function SchemaView(props) {
           body: updtBody
         };
 
-        let res = postSMAXData(postParams);
-        console.log(res);
-
-        setNeedSave(false);
-        setShowModal(false);
-        
-          // .then( postRes => {
-          //  console.log(`Updated with status: ${postRes.status}`);
-
-          //   //setShowModal(false);
-          // })
-          // .catch(err => {
-          //   console.log(err);
-          //   //setShowModal(false);
-          // })
+        postSMAXData(postParams)
+        .then(response => {
+          console.log(response.data);
+          setNeedSave(false);
+          setShowModal(false);
+        })
+        .catch(function (error) {
+            console.log(error);
+          }
+        )
     }
 
     if (svgLink !== null) {

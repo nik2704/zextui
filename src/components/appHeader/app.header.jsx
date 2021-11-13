@@ -1,10 +1,8 @@
 import React from 'react';
-//import { switchStateField } from '../utils/commonMethods';
 
 export class AppHeader extends React.Component {
 
     buttonClick(btnType) {
-        // console.log(this.props.state)
         switch (btnType) {
             case 'edit':
                 this.props.switchStateField(['mode', 'previousMode'], ['mapselection', this.props.state.mode]);
@@ -16,12 +14,6 @@ export class AppHeader extends React.Component {
                     this.props.state.tmpSelectedMap,
                     { id: null, file_name: null }
                 ]);             
-                // this.props.switchStateField(['mode', 'previousMode', 'selectedMap', 'tmpSelectedMap'], [
-                //     this.props.state.previousMode,
-                //     this.props.state.mode,
-                //     this.props.state.tmpSelectedMap,
-                //     { id: null, file_name: null }
-                // ]);             
                 break;
             case 'save':
                 this.props.switchStateField(['mode', 'tmpSelectedMap'], [

@@ -60,11 +60,11 @@ export function fetchSMAXData ( fetchParams ) {
   });
 }
 
-export async function postSMAXData ( postParams ) {
+export function postSMAXData ( postParams ) {
 
   const url = `https://${postParams.thost}:${postParams.tport}/rest/${postParams.tid}/ems/bulk`;
   const data = postParams.body;
-  let res = await axios.post(
+  return axios.post(
     url,
     data,
     {
@@ -74,14 +74,4 @@ export async function postSMAXData ( postParams ) {
         }
     }
   )
-  
-  return res;
-  // .then(response => {
-  //       console.log('saved');
-  //       dispatch({ status: 'OK', data: response.data });
-  //   })
-  // .catch(function (error) {
-  //   console.log(error);
-  //   return { status: 'ERROR' };
-  // })
 }
