@@ -16,7 +16,9 @@ const fetchParams = {
     filter: null,
     token: null
 }
-
+console.log(process.env.TENANTID);
+console.log(process.env.TENANTHOST);
+console.log(process.env.TENANTPORT);
 // create express application
 const app = express();
 app.use(cors());
