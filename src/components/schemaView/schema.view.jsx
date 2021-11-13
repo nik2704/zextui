@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import {ReactSvgPanZoomLoader} from './react-svg-pan-zoom-loader';
 // import {INITIAL_VALUE, ReactSVGPanZoom, TOOL_NONE, Toolbar} from './react-svg-pan-zoom';
 import {INITIAL_VALUE, ReactSVGPanZoom, TOOL_NONE, Toolbar, fitSelection, zoomOnViewerCenter, fitToViewer} from './react-svg-pan-zoom';
-import { SYSTEM_VARS } from '../../../config/config';
+//import { SYSTEM_VARS } from '../../../config/config';
 import { Modal } from '../modal';
 import { postSMAXData } from '../../utils/commonMethods';
 
@@ -33,7 +33,8 @@ export function SchemaView(props) {
 
     useEffect(() => {
         if (props.state.selectedMap.id !== null) {
-          setSvgLink(`https://${SYSTEM_VARS.TENANTHOST}/rest/${SYSTEM_VARS.TENANTID}/frs/file-list/${props.state.selectedMap.id}`);
+          setSvgLink(`https://${props.state.cfg.thost}/rest/${props.state.cfg.tid}/frs/file-list/${props.state.selectedMap.id}`);
+          //setSvgLink(`https://${SYSTEM_VARS.TENANTHOST}/rest/${SYSTEM_VARS.TENANTID}/frs/file-list/${props.state.selectedMap.id}`);
           //setSvgLink(`http://${SYSTEM_VARS.TENANTHOST}:4050/att/instance?id=${props.state.selectedMap.id}&token=${props.state.token}`);
         }
     }, [props.state.selectedMap.id]);
@@ -75,7 +76,8 @@ export function SchemaView(props) {
                       <div className="item" key={`${idx}-${item.properties.Id}`}>
                         <i className='large server middle aligned icon'></i>
                         <div className="content" onMouseEnter={e => mouseEnter(e, item.properties.Id)} onMouseLeave={e => mouseLeave(e, item.properties.Id)}>
-                          <a href={`https://${SYSTEM_VARS.TENANTHOST}/saw/Device/${item.properties.Id}/general?TENANTID=${SYSTEM_VARS.TENANTID}`} className="header" target="_blank">{item.properties.DisplayLabel}</a>
+                          {/* <a href={`https://${SYSTEM_VARS.TENANTHOST}/saw/Device/${item.properties.Id}/general?TENANTID=${SYSTEM_VARS.TENANTID}`} className="header" target="_blank">{item.properties.DisplayLabel}</a> */}
+                          <a href={`https://${props.state.cfg.thost}/saw/Device/${item.properties.Id}/general?TENANTID=${props.state.cfg.tid}`} className="header" target="_blank">{item.properties.DisplayLabel}</a>
                           <div className="description">{`Owner: ${item.related_properties.OwnedByPerson.Name}`}</div>
                         </div>
                       </div>
@@ -377,9 +379,9 @@ export function SchemaView(props) {
         setShowModal(true);
 
         let postParams = {
-          thost: SYSTEM_VARS.TENANTHOST,
-          tport: SYSTEM_VARS.TENANTPORT,
-          tid: SYSTEM_VARS.TENANTID,
+          thost: props.state.cfg.thost,
+          tport: props.state.cfg.tport,
+          tid: props.state.cfg.tid,
           token: props.state.token,
           body: updtBody
         };

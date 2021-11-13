@@ -9,16 +9,21 @@ const { StaticRouter, matchPath } = require( 'react-router-dom' );
 
 const { SYSTEM_VARS } = require('../config/config');
 const srvPort = SYSTEM_VARS['EXTSRVPORT'];
+
+const cfg = {
+    tid: process.env.TENANTID || SYSTEM_VARS['TENANTID'],
+    thost: process.env.TENANTHOST || SYSTEM_VARS['TENANTHOST'],
+    tport: process.env.TENANTPORT || SYSTEM_VARS['TENANTPORT']
+}
+
 const fetchParams = {
-    tid: SYSTEM_VARS['TENANTID'],
-    thost: SYSTEM_VARS['TENANTHOST'],
-    tport: SYSTEM_VARS['TENANTPORT'],
+    tid: cfg.tid,
+    thost: cfg.thost,
+    tport: cfg.tport,
     filter: null,
     token: null
 }
-console.log(process.env.TENANTID);
-console.log(process.env.TENANTHOST);
-console.log(process.env.TENANTPORT);
+
 // create express application
 const app = express();
 app.use(cors());
@@ -42,6 +47,7 @@ app.use( '*', async ( req, res ) => {
 
     // fetch data of the matched component
     let componentData = { 
+        cfg: cfg,
         token: req.cookies['SMAX_AUTH_TOKEN'] || null,
         originalUrl: req.originalUrl,
         requestData: {

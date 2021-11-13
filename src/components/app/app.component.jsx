@@ -18,6 +18,7 @@ export class App extends React.Component {
         super(props);
 
         this.state = { 
+            cfg: {},
             token: null,
             spinner: false,
             originalUrl: '/',
@@ -103,8 +104,9 @@ export class App extends React.Component {
                 mode = 'error';
             }
 
-            let stateFields = ['token','srcObj', 'tgtObj', 'queryCoords', 'fetchedData', 'originalUrl', 'mode'];
+            let stateFields = ['cfg', 'token','srcObj', 'tgtObj', 'queryCoords', 'fetchedData', 'originalUrl', 'mode'];
             let stateValues = [
+                window.initial_state.cfg,
                 window.initial_state.token,
                 window.initial_state.requestData.srcObj,
                 window.initial_state.requestData.tgtObj,
