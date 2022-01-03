@@ -4,8 +4,8 @@ const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 const CopyWebpackPlugin = require( 'copy-webpack-plugin' );
 
 /*-------------------------------------------------*/
-//const ASSET_PATH = process.env.ASSET_PATH || 'http://localhost:9000/';
-const ASSET_PATH = process.env.ASSET_PATH || 'https://zsmaxcp.lab.swdemo.ru/zextui/';
+const ASSET_PATH = process.env.ASSET_PATH || 'http://localhost:9000/';
+//const ASSET_PATH = process.env.ASSET_PATH || 'https://zsmaxcp.lab.swdemo.ru/zextui/';
 
 module.exports = {
 

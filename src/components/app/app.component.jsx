@@ -76,6 +76,7 @@ export class App extends React.Component {
                 currentCiId =  window.initial_state.requestData.srcObj.id;
 
             if (window.initial_state.token !== null) {
+
                 if (Object.keys(window.initial_state.fetchedData.ciColocated).length > 0) {
                     if (window.initial_state.fetchedData.ciColocated.entities.length > 0) {
                         currentCi = window.initial_state.fetchedData.ciColocated.entities.find(item => item.properties.Id === currentCiId );
@@ -98,6 +99,11 @@ export class App extends React.Component {
                         }
                     } else {
                         mode = 'error';
+                        //mode = 'wrongmap';
+                    }
+                } else {
+                    if (Object.keys(window.initial_state.fetchedData.locationFiles).length === 0) {
+                        mode = 'nomaps';
                     }
                 }
             } else {
@@ -150,6 +156,9 @@ export class App extends React.Component {
                 break;
             case 'mapselection':
                 msg = 'SELECT a map from the list';
+                break;
+            case 'nomaps':
+                msg = 'There is no map attached to the Location...'
                 break;
             default:
                 msg = 'ERROR';

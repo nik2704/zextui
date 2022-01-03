@@ -5,6 +5,15 @@ import { Modal } from '../modal';
 import { postSMAXData } from '../../utils/commonMethods';
 
 export function SchemaView(props) {
+    const getOwnerName = ( relProps ) => {
+      if (relProps.OwnedByPerson !== undefined) {
+        return relProps.OwnedByPerson.Name
+      } else {
+        return 'OWNER NOT SELECTED';
+      }
+    }
+
+  //console.log(props.state);
     const Viewer = useRef(null);
     const border = useRef(null);
     const [tool, setTool] = useState(TOOL_NONE);
@@ -18,8 +27,9 @@ export function SchemaView(props) {
       id: props.state.currentCi.properties.Id,
       subType: props.state.currentCi.properties.SubType,
       displayLabel: props.state.currentCi.properties.DisplayLabel,
-      owner: props.state.currentCi.related_properties.OwnedByPerson.Name
+      owner: getOwnerName(props.state.currentCi.related_properties)
     });
+  //props.state.currentCi.related_properties.OwnedByPerson.Name
     
     useEffect(() => {
         if (svgLink != null) {
@@ -48,15 +58,7 @@ export function SchemaView(props) {
             />
         )    
     }
-
-    const getOwnerName = ( relProps ) => {
-      if (relProps.OwnedByPerson !== undefined) {
-        return relProps.OwnedByPerson.Name
-      } else {
-        return 'OWNER NOT SELECTED';
-      }
-    }
-    
+   
     const renderList = () => {
       if (props.state.showOtherCIs === true) {
         if (props.state.fetchedData.ciColocated.entities !== undefined) {
