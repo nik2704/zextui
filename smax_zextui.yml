@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: zna-zextui
-        image: localhost:5000/znasvc/zextui:version4.8
+        image: localhost:5000/znasvc/zextui:version5.0
         env:
         - name: TENANTHOST
           value: "zsmaxcp.lab.swdemo.ru"
