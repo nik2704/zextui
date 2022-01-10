@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    ingress.kubernetes.io/secure-backends: "false"
+    ingress.kubernetes.io/force-ssl-redirect: "false"
+    kubernetes.io/ingress.allow-http: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    ingress.kubernetes.io/affinity: cookie
+    ingress.kubernetes.io/backend-protocol: HTTP
+    ingress.kubernetes.io/limit-connections: "10000"
+    ingress.kubernetes.io/limit-rps: "5000"
+    ingress.kubernetes.io/session-cookie-hash: sha1
+    ingress.kubernetes.io/session-cookie-name: route
+  generation: 1
+  name: zna-zextui-ingress
+  namespace: itsma-bbbrc
+spec:
+  rules:
+  - http:
+      paths:
+      - backend:
+          service:
+            name: zna-zextui-srv
+            port:
+              number: 9000
+        path: /zextui(/|$)(.*)
+        pathType: Prefix
+

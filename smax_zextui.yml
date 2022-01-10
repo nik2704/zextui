@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zna-zextui-depl
+  namespace: itsma-bbbrc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zna-zextui
+  template:
+    metadata:
+      labels:
+        app: zna-zextui
+    spec:
+      containers:
+      - name: zna-zextui
+        image: localhost:5000/znasvc/zextui:version4.8
+        env:
+        - name: TENANTHOST
+          value: "zsmaxcp.lab.swdemo.ru"
+        - name: TENANTPORT
+          value: "443"
+        - name: TENANTID
+          value: "740675490"
+        - name: ASSET_PATH
+          value: "https://zsmaxcp.lab.swdemo.ru/zextui/"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zna-zextui-srv
+  namespace: itsma-bbbrc
+spec:
+  type: NodePort
+  selector:
+    app: zna-zextui
+  ports:
+    - port: 9000
+      targetPort: 9000
+      nodePort: 9000
