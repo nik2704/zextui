@@ -11,8 +11,10 @@ const { SYSTEM_VARS } = require('../config/config');
 const srvPort = SYSTEM_VARS['EXTSRVPORT'];
 
 const cfg = {
-    tid: process.env.TENANTID || SYSTEM_VARS['TENANTID'],
-    thost: process.env.TENANTHOST || SYSTEM_VARS['TENANTHOST'],
+//    tid: process.env.TENANTID || SYSTEM_VARS['TENANTID'],
+//    thost: process.env.TENANTHOST || SYSTEM_VARS['TENANTHOST'],
+    tid: process.env.TENANTID,
+    thost: process.env.TENANTHOST,
     tport: process.env.TENANTPORT || SYSTEM_VARS['TENANTPORT']
 }
 
