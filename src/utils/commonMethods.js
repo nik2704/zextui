@@ -56,6 +56,7 @@ export function fetchSMAXData ( fetchParams ) {
   }).catch( err => {
     console.log(`ERROR fetching data: `);
     console.log(fetchParams);
+    console.log(err);
     return null;
   });
 }
