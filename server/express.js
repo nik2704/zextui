@@ -89,7 +89,13 @@ app.use( '*', async ( req, res ) => {
 
                 if (componentData.requestData.srcObj.id !== null) {
                     try {
-                        componentData.fetchedData.ciColocated = await matchRoute.component.fetchData( fetchParams );
+                        let ciColocated = await matchRoute.component.fetchData( fetchParams );
+                        if (ciColocated !== null) {
+                            componentData.fetchedData.ciColocated = ciColocated;
+                        } else {
+                            componentData.fetchedData.ciColocated = {};
+                        }
+                        
                     } catch (err) {
                         console.log(err);
                     }

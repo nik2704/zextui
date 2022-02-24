@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: zna-zextui
-        image: localhost:5000/znasvc/zextui:version5.0
+        image: zenchenkona1/zextui:latest
         env:
         - name: TENANTHOST
           value: "zsmaxcp.lab.swdemo.ru"
@@ -23,8 +23,6 @@ spec:
           value: "443"
         - name: TENANTID
           value: "740675490"
-        - name: ASSET_PATH
-          value: "https://zsmaxcp.lab.swdemo.ru/zextui/"
 ---
 apiVersion: v1
 kind: Service
