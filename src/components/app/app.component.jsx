@@ -145,6 +145,7 @@ export class App extends React.Component {
     }
     // render view
     getHeaderText = () => {
+        console.log(this.state);
         let msg = 'Data loading...';
 
         switch (this.state.mode) {

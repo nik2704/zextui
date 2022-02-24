@@ -110,15 +110,21 @@ app.use( '*', async ( req, res ) => {
         
                     
                     try {
+                        console.log('---- Fetch params -----');
+                        console.log(locFetchParams);
                         const attData = await matchRoute.component.fetchData( locFetchParams );
+                        console.log('---- Data fetched -----');
+                        console.log(attData);
                         if (attData !== null) {
                             if (attData.entities !== undefined) {
-                                if (attData.entities[0].properties.LocationAttachments !== undefined) {
-                                    const arrArr = JSON.parse(attData.entities[0].properties.LocationAttachments);
-                                    const fileList = arrArr.complexTypeProperties.map((item) => {
-                                        return {id: item.properties.id, file_name: item.properties.file_name, file_extension: item.properties.file_extension}
-                                    }).filter(item => item.file_extension === 'svg');
-                                    componentData.fetchedData.locationFiles = fileList;
+                                if (attData.entities.length > 0) {
+                                    if (attData.entities[0].properties.LocationAttachments !== undefined) {
+                                        const arrArr = JSON.parse(attData.entities[0].properties.LocationAttachments);
+                                        const fileList = arrArr.complexTypeProperties.map((item) => {
+                                            return {id: item.properties.id, file_name: item.properties.file_name, file_extension: item.properties.file_extension}
+                                        }).filter(item => item.file_extension === 'svg');
+                                        componentData.fetchedData.locationFiles = fileList;
+                                    }
                                 }
                             }
                         }
